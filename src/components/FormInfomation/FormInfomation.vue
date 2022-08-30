@@ -32,9 +32,8 @@
       <p class="title">Ảnh của bạn</p>
       <UploadFiles />
     </div>
-    
   </div>
-  <Button type="gray">Tiếp</Button>
+  <Button @click="handleNextStep" type="gray">Tiếp</Button>
 </template>
 <script>
 import Must from "../Must.vue";
@@ -42,7 +41,7 @@ import DatePicker from "../DatePicker.vue";
 import SelectMulti from "../Test1/SelectMulti.vue";
 import InputLarge from "../InputLarge.vue";
 import UploadFiles from "../UploadFiles/UploadFiles.vue";
-import Button from "../Button.vue"
+import Button from "../Button.vue";
 export default {
   components: {
     Must,
@@ -50,7 +49,16 @@ export default {
     SelectMulti,
     InputLarge,
     UploadFiles,
-    Button
+    Button,
+  },
+  methods: {
+    handleNextStep() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      this.$emit("onChangeStep", {value:"",indexStep:2});
+    },
   },
 };
 </script>

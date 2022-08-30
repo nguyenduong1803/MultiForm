@@ -10,8 +10,8 @@
         <span class="addTitle">Thêm công ty</span></Button
       >
     </div>
-    <Button>Tiếp</Button>
-    <Button type="outline">Quay lại</Button>
+    <Button @click="handleNextStep">Tiếp</Button>
+    <Button @click="handlePrevStep" type="outline">Quay lại</Button>
   </div>
 </template>
 <script>
@@ -23,7 +23,25 @@ export default {
   data() {
     return {
       add,
+      
     };
+  },
+  methods: {
+    handleNextStep() {
+      this.$emit("onChangeStep", {value:"",indexStep:3});
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+    handlePrevStep() {
+          this.$emit("onChangeStep", {value:"",indexStep:1});
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
   },
   components: {
     FormItem,
@@ -45,7 +63,8 @@ export default {
 .positionJob:focus {
   outline: none;
 }
-.addicon {
+.addIcon {
   width: 16px;
+  margin-right: 12px;
 }
 </style>
