@@ -93,6 +93,7 @@ export default {
         extentions === "png"
       ) {
         this.createFile(files[0]);
+        this.$emit("onChangeFiles",{funcUpload:this.upload,files:this.files})
       } else if (files[0].size > 10000000) {
         this.waringUpload = "The maximum file size is 10 MB";
       } else {

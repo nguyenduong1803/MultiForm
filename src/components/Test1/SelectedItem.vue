@@ -1,19 +1,19 @@
 <template>
   <div class="selected__item">
-    <p>{{selectItem}}</p>
-    <img @click="handleDelete" :src="close" class="selected__item-close">
+    <p>{{selectItem.jobName}}</p>
+      <img @click="handleDelete" :src="close" class="selected__item-close">
+
   </div>
 </template>
 
 <script>
 import close from "../../assets/svg/close.svg"
 export default {
-  data(){
+ data(){
     return {
       close
     }
-  },
-  props:{
+  },  props:{
     selectItem:{
       type:String,
       default:""
@@ -25,7 +25,7 @@ export default {
   },
   methods:{
     handleDelete(){
-      this.$emit("onDelete",{type:"delete",index:this.index})
+      this.$emit("onDelete",this.index)
     }
   }
 };

@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       steps: [
-        { name: "Thông tin ca nhan", step: 1 },
+        { name: "Thông tin cá nhân", step: 1 },
         { name: "Kinh nghiệm làm việc", step: 2 },
         { name: "Xác nhận thông tin", step: 3 },
       ],

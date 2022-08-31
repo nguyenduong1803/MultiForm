@@ -1,23 +1,30 @@
-<template >
-    <div>
-         <span class="titleMust">{{title}}</span>
-        <textarea
-          class="description"
-        >
-        </textarea>
-    </div>
+<template>
+  <div>
+    <span class="titleMust">{{ title }}</span>
+    <textarea v-model="value" class="description"> </textarea>
+  </div>
 </template>
 <script>
 export default {
-    props:{
-        title:{
-            type:String,
-        }
-    }
-}
+  data() {
+    return {
+      value: "",
+    };
+  },
+  watch: {
+    value(newValue) {
+      this.$emit("changeValue", newValue);
+    },
+  },
+  props: {
+    title: {
+      type: String,
+    },
+  },
+};
 </script>
 <style scoped>
-    .titleMust {
+.titleMust {
   font-weight: 400;
   font-size: 14px;
   color: #333333;
@@ -27,10 +34,10 @@ export default {
   width: 100%;
   resize: none;
   height: 152px;
-  border: 1px solid #DCDCDC;
+  border: 1px solid #dcdcdc;
   border-radius: 4px;
 }
-.description:focus{
-  outline:none;
+.description:focus {
+  outline: none;
 }
 </style>

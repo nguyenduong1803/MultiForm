@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="test1__search-wrap" :class="[isShowSearch ? 'active' : '']">
-      <div class="overlay" @click="isShowSearch = false"></div>
+      <div class="overlay" @click="handleToggleSearch"></div>
       <div class="border">
         <div class="wrap_input">
           <div class="search">
@@ -9,28 +9,28 @@
           </div>
           <div class="selected__wrap" ref="selected">
             <SelectedItem
-              v-for="(item, index) in listSelect"
-              :key="index"
+              v-for="item in listSelect"
+              :key="item.id"
               :selectItem="item"
-              @onDelete="handleSelect"
+              @onDelete="handleDelete"
             />
           </div>
           <input
             type="text"
             class="tes1__search-provinces"
-            placeholder="Chọn vị trí mà bạn muốn"
-            @focus="isShowSearch = true"
+            :placeholder="placeholder"
+            @focus="handleToggleSearch"
             v-model="debounceSearch"
           />
           <ResultSearch
-            v-if="debounceSearch !== '' && list.length > 0"
-            @onSelect="handleSelect"
+            v-if="hasResult"
+            @onSelect="handleAdd"
             :list="list"
             :listSelect="listSelect"
           />
           <div
             class="search__output"
-            v-else-if="keySearch !== '' && list.length === 0"
+            v-else-if="emptyOutput"
           >
             <p class="notify">Không tìm thấy</p>
           </div>
@@ -44,7 +44,7 @@
 import searchIcon from "../../assets/svg/search-svgrepo-com.svg";
 import ResultSearch from "./ResultSearch.vue";
 import SelectedItem from "./SelectedItem.vue";
-import axios from "axios";
+
 export default {
   data() {
     return {
@@ -57,24 +57,31 @@ export default {
       timeoutID: null,
     };
   },
+  computed: {
+    hasResult() {
+      return this.debounceSearch !== '' && this.list.length > 0
+    },
+    emptyOutput(){
+      return this.keySearch !== '' && this.list.length === 0
+    },
+   
+  },
   components: {
     ResultSearch,
     SelectedItem,
   },
   methods: {
-    handleSelect(payload) {
-      switch (payload.type) {
-        case "add":
-          if (!this.listSelect.some((item) => item === payload.value)) {
-            this.listSelect.push(payload.value);
-          }
-          break;
-        case "delete":
-          this.listSelect.splice(payload.index, 1);
-          break;
-        default:
-          break;
+    handleDelete(index) {
+          this.listSelect.splice(index, 1);
+    },
+    handleAdd(value) {
+      if (!this.listSelect.some((item) => item.jobName ===value)) {
+        this.listSelect.push(value);
       }
+      this.$emit("onSelectMulti",this.listSelect)
+    },
+     handleToggleSearch(){
+      this.isShowSearch= !this.isShowSearch
     },
     debounce(value, delay) {
       clearTimeout(this.timeoutID);
@@ -85,32 +92,33 @@ export default {
       }
     },
   },
-  computed: {},
   watch: {
-    keySearch(newValue) {
-      axios
-        .get(`https://provinces.open-api.vn/api/d/search/`, {
-          params: {
-            q: newValue,
-          },
-        })
-        .then((response) => {
-          this.list = response.data.map((provinces) => provinces.name);
-        })
-        .catch(function (err) {
-          this.list = [];
-        });
+     keySearch(newValue) {
+      this.list=this.listJob.filter(job=>{
+       return job.jobName.toLowerCase().indexOf(newValue) > -1; 
+      })
+      
     },
     debounceSearch(newValue) {
-      this.debounce(newValue, 500);
+      this.debounce(newValue, 200);
     },
+  },
+  props:{
+    listJob:{
+      type:Array,
+      required:true,
+      default:[],
+    },
+    placeholder:{
+      type:String,
+      default:""
+    }
   },
   destroyed() {
     clearTimeout(this.timeoutID);
   },
 };
 </script>
-    
 
 <style scoped>
 .test1__search-wrap {

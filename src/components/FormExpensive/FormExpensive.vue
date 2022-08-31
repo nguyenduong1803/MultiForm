@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="expensives">
-      <FormItem />
-      <FormItem />
+      <FormItem v-for="item in countForm" :key="item"/>
+   
     </div>
     <div class="formControl">
       <Button type="outline"
         ><img class="addIcon" :src="add" />
-        <span class="addTitle">Thêm công ty</span></Button
+        <span @click="handleAddForm" class="addTitle">Thêm công ty</span></Button
       >
     </div>
-    <Button>Tiếp</Button>
-    <Button type="outline">Quay lại</Button>
+    <Button @click="handleNextStep">Tiếp</Button>
+    <Button @click="handlePrevStep" type="outline">Quay lại</Button>
   </div>
 </template>
 <script>
@@ -23,7 +23,31 @@ export default {
   data() {
     return {
       add,
+      countForm:[1,2],
+      listFormItem:[
+        
+      ]
     };
+  },
+  methods: {
+    handleNextStep() {
+      this.$emit("onChangeStep", {value:"",indexStep:3});
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+    handlePrevStep() {
+          this.$emit("onChangeStep", {value:"",indexStep:1});
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+    handleAddForm(){
+      this.countForm.push(this.countForm.lenght+1)
+    }
   },
   components: {
     FormItem,
@@ -45,7 +69,8 @@ export default {
 .positionJob:focus {
   outline: none;
 }
-.addicon {
+.addIcon {
   width: 16px;
+  margin-right: 12px;
 }
 </style>

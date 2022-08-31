@@ -2,19 +2,19 @@
   <div class="expensive">
     <div class="company">
       <div class="selectCompany">
-        <select class="inputCompany">
+        <select v-model="company" class="inputCompany">
           <option value="">MorSoftware</option>
           <option value="">Mor</option>
           <option value="">Mor</option>
           <option value="">Mor</option>
         </select>
-        <img class="deleteIcon" :src="img" alt="" />
+        <img @click="hanleDeleteForm()" class="deleteIcon" :src="img" alt="" />
       </div>
     </div>
     <div class="formExpensive">
       <div class="formControl">
         <Must :title="'Vị trí từng làm'" />
-        <input class="positionJob" type="text" />
+        <input v-model="formerPosition" class="positionJob" type="text" />
       </div>
       <div class="formControl">
         <Must :title="'Thời gian làm việc'" />
@@ -25,7 +25,10 @@
         </div>
       </div>
       <div class="formControl">
-       <InputLarge title="Mô tả về công việc"/>
+        <InputLarge
+          @changeValue="handleChangeValue"
+          title="Mô tả về công việc"
+        />
       </div>
     </div>
   </div>
@@ -34,17 +37,31 @@
 import img from "../../assets/svg/garbage-trash-svgrepo-com.svg";
 import Must from "../Must.vue";
 import DatePicker from "../DatePicker.vue";
-import InputLarge from "../InputLarge.vue"
+import InputLarge from "../InputLarge.vue";
 export default {
   data() {
     return {
       img,
+      company: "",
+      formerPosition: "",
+      rangeTime: "",
+      description: "",
     };
+  },
+  methods: {
+    handleChangeValue(value) {
+      console.log(value);
+      this.description = value;
+      console.log(this.description);
+    },
+    hanleDeleteForm(){
+      this.$emit("onDeleteForm",)
+    }
   },
   components: {
     Must,
     DatePicker,
-    InputLarge
+    InputLarge,
   },
 };
 </script>
@@ -52,7 +69,7 @@ export default {
 .expensive {
   width: 100%;
   padding: 24px;
-  margin-bottom:24px;
+  margin-bottom: 24px;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
 }
@@ -113,5 +130,4 @@ export default {
   background-color: #bfbfbf;
   height: 2px;
 }
-
 </style>
