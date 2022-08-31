@@ -13,9 +13,8 @@ export default {
   },
   watch: {
     date(newValue) {
-      console.log(newValue);
-      const newDate = format(new Date(newValue), "dd-MM-yyyy");
-      console.log(newDate);
+      // const newDate = format(new Date(newValue), "dd-MM-yyyy");
+      this.$emit("onChangedate",newValue)
     },
   },
 };

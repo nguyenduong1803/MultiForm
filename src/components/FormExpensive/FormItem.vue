@@ -8,7 +8,7 @@
           <option value="">Mor</option>
           <option value="">Mor</option>
         </select>
-        <img class="deleteIcon" :src="img" alt="" />
+        <img @click="hanleDeleteForm()" class="deleteIcon" :src="img" alt="" />
       </div>
     </div>
     <div class="formExpensive">
@@ -54,6 +54,9 @@ export default {
       this.description = value;
       console.log(this.description);
     },
+    hanleDeleteForm(){
+      this.$emit("onDeleteForm",)
+    }
   },
   components: {
     Must,

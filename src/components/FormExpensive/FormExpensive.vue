@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="expensives">
-      <FormItem />
-      <FormItem />
+      <FormItem v-for="item in countForm" :key="item"/>
+   
     </div>
     <div class="formControl">
       <Button type="outline"
         ><img class="addIcon" :src="add" />
-        <span class="addTitle">Thêm công ty</span></Button
+        <span @click="handleAddForm" class="addTitle">Thêm công ty</span></Button
       >
     </div>
     <Button @click="handleNextStep">Tiếp</Button>
@@ -23,7 +23,10 @@ export default {
   data() {
     return {
       add,
-      
+      countForm:[1,2],
+      listFormItem:[
+        
+      ]
     };
   },
   methods: {
@@ -42,6 +45,9 @@ export default {
         behavior: "smooth",
       });
     },
+    handleAddForm(){
+      this.countForm.push(this.countForm.lenght+1)
+    }
   },
   components: {
     FormItem,

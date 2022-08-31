@@ -3,12 +3,9 @@
     <h2 class="title">Đơn ứng tuyển</h2>
     <Stepper :stepIndex="currentStep" />
 
-    <FormInfomation v-if="firtActive" @onChangeStep="handleChangStep" />
-    <FormExpensive v-if="secondeActive" @onChangeStep="handleChangStep" />
-    <FormConfirm v-if="thirdActive" @onChangeStep="handleChangStep" />
-    <!-- <keep-alive>
-     <components  :is="FormExpensive"></components>
-  </keep-alive> -->
+    <KeepAlive>
+      <component :is="componentInit" @onChangeStep="handleChangStep" />
+    </KeepAlive>
   </div>
 </template>
 <script>
@@ -21,19 +18,13 @@ export default {
   data() {
     return {
       currentStep: 1,
-      initialInfoUser: {
-        name: "",
-        dob: "",
-        city: "",
-        wordPossition: "",
-        description: "",
-        avatar: [],
-      },
+      initialInfoUser: {},
       expensives: [],
       confirm: {
         reasonJoin: "",
         rangeSalary: 0,
       },
+      componentInit: FormInfomation,
     };
   },
   components: {
@@ -43,21 +34,21 @@ export default {
     Stepper,
   },
   methods: {
-    handleChangStep({indexStep,value}) {
-      console.log(indexStep);
+    handleChangStep({ indexStep, value }) {
+      if (indexStep === 1) {
+        this.componentInit = FormInfomation;
+      } else if (indexStep === 2) {
+        this.componentInit = FormExpensive;
+        this.initialInfoUser = value;
+        console.log(this.initialInfoUser);
+      } else if (indexStep === 3) {
+        this.componentInit = FormConfirm;
+      }
       this.currentStep = indexStep;
     },
   },
   computed: {
-    firtActive() {
-      return this.currentStep === 1;
-    },
-    secondeActive() {
-      return this.currentStep === 2;
-    },
-    thirdActive() {
-      return this.currentStep === 3;
-    },
+  
   },
 };
 </script>
@@ -65,7 +56,7 @@ export default {
 .container {
   max-width: 1026px;
   margin: 0 auto;
-
+  margin-bottom: 100px;
 }
 .title {
   font-weight: 400;

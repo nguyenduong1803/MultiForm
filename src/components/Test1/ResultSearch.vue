@@ -1,13 +1,13 @@
 <template>
   <div class="search__output">
-    <ul>
+    <ul class="wrapResult">
       <li
-        v-for="(item, index) in list"
+        v-for="(item) in list"
         @click="handleChoose(item)"
         class="search__output-item"
-        :key="index"
+        :key="item.id"
       >
-        {{ item }}
+        {{ item.jobName }}
       </li>
     </ul>
     
@@ -16,17 +16,18 @@
 
 <script>
 export default {
- 
+  data() {
+    return {};
+  },
   methods: {
     handleChoose(item) {
-      
-      this.$emit("onSelect", { type: "add", value: item });
+      this.$emit("onSelect", item);
     },
   },
   props: {
     list: {
-      type: Array,
-      default: [],
+      type: Object,
+      default: {},
       required: true,
     },
     
@@ -41,11 +42,15 @@ export default {
 .search__output::-webkit-scrollbar {
   display: none;
 }
+.wrapResult{
+  padding: 0;
+  margin: 0;
+}
 .search__output {
   display: none;
   position: absolute;
   top: 100%;
-  width: 400px;
+  width: 100%;
   max-height: 128px;
   background-color: #f1f5f8;
   box-shadow: 0px 1px 8px rgb(102 102 102 / 25%);
